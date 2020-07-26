@@ -1,0 +1,3 @@
+# Module transsetanalytics
+# RPC service class, partial path of RPC policy file
+com.verifone.analytics.transset.client.TranssetDbService, 57EE05EFFA939EA83279ADBAB3C30E46.gwt.rpc

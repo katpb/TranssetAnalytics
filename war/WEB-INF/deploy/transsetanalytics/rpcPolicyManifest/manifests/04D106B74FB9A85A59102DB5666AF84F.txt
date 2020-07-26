@@ -1,0 +1,2 @@
+serviceClass: com.verifone.analytics.transset.client.TranssetDbService
+path: 57EE05EFFA939EA83279ADBAB3C30E46.gwt.rpc
