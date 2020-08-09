@@ -1,10 +1,11 @@
 package com.verifone.analytics.transset.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.List;
+import java.util.Map;
 
-/**
- * The async counterpart of <code>GreetingService</code>.
- */
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.verifone.analytics.transset.shared.TransactionData;
+
 public interface TranssetAnalyserServiceAsync {
-	void getCollection(String collectionName, AsyncCallback<String> callback) throws IllegalArgumentException;
+	void getCollection(String siteId, AsyncCallback<Map<String, List<TransactionData>>> callback) throws IllegalArgumentException;
 }

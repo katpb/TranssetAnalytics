@@ -1,5 +1,9 @@
 package com.verifone.analytics.transset.client;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.verifone.analytics.transset.shared.TransactionData;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -106,7 +111,7 @@ public class TranssetAnalytics implements EntryPoint {
 			private void sendNameToServer() {
 				// First, we validate the input.
 				errorLabel.setText("");
-				String textToServer = "groupPluByDate";
+				String textToServer = "site5";
 				
 				System.out.println(textToServer);
 				
@@ -119,20 +124,25 @@ public class TranssetAnalytics implements EntryPoint {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				dbService.getCollection(textToServer, new AsyncCallback<String>() {
+				dbService.getCollection(textToServer, new AsyncCallback<Map<String, List<TransactionData>>>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
-						dialogBox.setText("Remote Procedure Call - Failure");
+						dialogBox.setText("Remote Procedure Call - Failure" + caught);
 						serverResponseLabel.addStyleName("serverResponseLabelError");
 						serverResponseLabel.setHTML(SERVER_ERROR);
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
 
-					public void onSuccess(String result) {
+					@Override
+					public void onSuccess(Map<String, List<TransactionData>> result) {
+						String resultString = null;
+						for(Entry entry : result.entrySet()) {
+							resultString += entry.getKey() + ", ";
+						}
 						dialogBox.setText("Remote Procedure Call");
 						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
+						serverResponseLabel.setHTML(resultString);
 						dialogBox.center();
 						closeButton.setFocus(true);
 					}
