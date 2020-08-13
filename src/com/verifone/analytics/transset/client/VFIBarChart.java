@@ -6,11 +6,15 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
-import com.googlecode.gwt.charts.client.corechart.PieChart;
+import com.googlecode.gwt.charts.client.corechart.ComboChart;
+import com.googlecode.gwt.charts.client.corechart.ComboChartOptions;
+import com.googlecode.gwt.charts.client.options.HAxis;
+import com.googlecode.gwt.charts.client.options.SeriesType;
+import com.googlecode.gwt.charts.client.options.VAxis;
 
-public class VFIPieChart {
-	
-	private PieChart mopChart;
+public class VFIBarChart {
+
+	private ComboChart chart;
 	private HTMLPanel mainPanel = new HTMLPanel("");
 	
 	private ColumnType columnType1;
@@ -20,9 +24,12 @@ public class VFIPieChart {
 	private String columnName2;
 	private Map dataMap;
 	private String title;
+	private String hAxis;
+	private String vAxis;
+	private SeriesType seriesType = SeriesType.BARS;
 	
 	
-	private void drawPieChart() {
+	private void drawBarChart() {
 		// Prepare the data
 		DataTable data = DataTable.create();
 		data.addColumn(columnType1, columnName1);
@@ -31,7 +38,12 @@ public class VFIPieChart {
 		for (Object entry : dataMap.keySet()) {
 			data.addRow(entry, dataMap.get(entry));
 		}
-		mopChart.draw(data);
+		ComboChartOptions options = ComboChartOptions.create();
+		options.setTitle(title);
+		options.setHAxis(HAxis.create(hAxis));
+		options.setVAxis(VAxis.create(vAxis));
+		options.setSeriesType(seriesType);
+		chart.draw(data, options);
 	}	
 	
 	public void setTitle (String title ) {
@@ -51,20 +63,43 @@ public class VFIPieChart {
 		this.dataMap = data;
 	}
 	
+	public String gethAxis() {
+		return hAxis;
+	}
+
+	public void sethAxis(String hAxis) {
+		this.hAxis = hAxis;
+	}
+
+	public String getvAxis() {
+		return vAxis;
+	}
+
+	public void setvAxis(String vAxis) {
+		this.vAxis = vAxis;
+	}
+	
+	public SeriesType getSeriesType() {
+		return seriesType;
+	}
+
+	public void setSeriesType(SeriesType seriesType) {
+		this.seriesType = seriesType;
+	}
+
 	public HTMLPanel getPanel() {
 		HTMLPanel titlePanel = new HTMLPanel(title);
 		mainPanel.add(titlePanel);
-		//drawPieChart();
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);
 		obj.setRunnable(new Runnable() {
 			public void run() {
 				// Create and attach the chart
-				mopChart = new PieChart();
-				mopChart.clearChart();
-				drawPieChart();
+				chart = new ComboChart();
+				chart.clearChart();
+				drawBarChart();
 				
-				mainPanel.add(mopChart);
+				mainPanel.add(chart);
 				RunChart.getInstance().notifyDone();
 			}
 

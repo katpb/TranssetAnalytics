@@ -44,7 +44,7 @@ public class DailySalesInfo extends TransactionData {
 	 * @return the mopName
 	 */
 	public String getType() {
-		return type;
+		return !type.equals("null") ? type : "Others";
 	}
 
 }

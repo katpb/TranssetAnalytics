@@ -11,7 +11,12 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwt.charts.client.ColumnType;
+import com.googlecode.gwt.charts.client.options.HAxis;
+import com.googlecode.gwt.charts.client.options.SeriesType;
+import com.googlecode.gwt.charts.client.options.VAxis;
+import com.verifone.analytics.transset.shared.CategorySaleCount;
 import com.verifone.analytics.transset.shared.DailySalesInfo;
+import com.verifone.analytics.transset.shared.PluSaleCount;
 import com.verifone.analytics.transset.shared.TransactionData;
 
 public final class WorkingArea {
@@ -48,7 +53,6 @@ public final class WorkingArea {
 
 		mainBoard.add(menubar);
 		mainBoard.add(dataPanel);
-
 		root.add(mainBoard);
 	}
 
@@ -57,11 +61,11 @@ public final class WorkingArea {
 			
 			@Override
 			public void onSuccess(List<String> result) {
-				
+				siteList.addItem("");
 				for (String siteName : result) {
 					siteList.addItem(siteName);
 				}
-				siteList.setItemSelected(1, true);
+				siteList.setItemSelected(0, true);
 			}
 			
 			@Override
@@ -176,7 +180,19 @@ public final class WorkingArea {
 	}
 
 	private void loadSalesByEntryMethod(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
+		VFIBarChart pieChart = new VFIBarChart();
+		pieChart.setTitle(entry);
+		pieChart.setDataColumnType1(ColumnType.STRING, "Entry-Method description");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number Time use");
+		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		for (TransactionData dailySaleInfo : list) {
+			DailySalesInfo pluSalesCount = (DailySalesInfo)dailySaleInfo;
+			pluCountMap.put(pluSalesCount.getType(), pluSalesCount.getCount());
+		}
+		pieChart.setData(pluCountMap);
+		pieChart.sethAxis("Entry-Method");
+		pieChart.sethAxis("Count");
+		dataPanel.add(pieChart.getPanel());
 		
 	}
 
@@ -221,7 +237,19 @@ public final class WorkingArea {
 	}
 
 	private void loadSalesByCategoryTop(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
+		VFIBarChart pieChart = new VFIBarChart();
+		pieChart.setTitle(entry);
+		pieChart.setDataColumnType1(ColumnType.STRING, "Category description");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		for (TransactionData dailySaleInfo : list) {
+			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
+			pluCountMap.put(catSalesCount.getCategoryDesc(), catSalesCount.getCount());
+		}
+		pieChart.setData(pluCountMap);
+		pieChart.sethAxis("Category");
+		pieChart.sethAxis("Count");
+		dataPanel.add(pieChart.getPanel());
 		
 	}
 
@@ -241,7 +269,20 @@ public final class WorkingArea {
 	}
 
 	private void loadSalesByUPCTop(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
+		VFIBarChart lineChart = new VFIBarChart();
+		lineChart.setTitle(entry);
+		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
+		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		for (TransactionData dailySaleInfo : list) {
+			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
+			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());
+		}
+		lineChart.setSeriesType(SeriesType.LINE);
+		lineChart.setData(pluCountMap);
+		lineChart.sethAxis("Plu");
+		lineChart.sethAxis("Count");
+		dataPanel.add(lineChart.getPanel());
 		
 	}
 
