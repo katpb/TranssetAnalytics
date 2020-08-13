@@ -8,7 +8,11 @@ import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.ComboChart;
 import com.googlecode.gwt.charts.client.corechart.ComboChartOptions;
+import com.googlecode.gwt.charts.client.options.Bar;
 import com.googlecode.gwt.charts.client.options.HAxis;
+import com.googlecode.gwt.charts.client.options.Legend;
+import com.googlecode.gwt.charts.client.options.LegendAlignment;
+import com.googlecode.gwt.charts.client.options.LegendPosition;
 import com.googlecode.gwt.charts.client.options.SeriesType;
 import com.googlecode.gwt.charts.client.options.VAxis;
 
@@ -38,11 +42,13 @@ public class VFIBarChart {
 		for (Object entry : dataMap.keySet()) {
 			data.addRow(entry, dataMap.get(entry));
 		}
-		ComboChartOptions options = ComboChartOptions.create();
-		options.setTitle(title);
+		ComboChartOptions options = ComboChartOptions.create();		
 		options.setHAxis(HAxis.create(hAxis));
 		options.setVAxis(VAxis.create(vAxis));
 		options.setSeriesType(seriesType);
+		Legend legend = Legend.create();
+		legend.setPosition(LegendPosition.NONE);
+		options.setLegend(legend);
 		chart.draw(data, options);
 	}	
 	
@@ -90,6 +96,7 @@ public class VFIBarChart {
 	public HTMLPanel getPanel() {
 		HTMLPanel titlePanel = new HTMLPanel(title);
 		titlePanel.setStyleName("titlePanel");
+		mainPanel.setStyleName("chartContainer");
 		mainPanel.add(titlePanel);
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);
