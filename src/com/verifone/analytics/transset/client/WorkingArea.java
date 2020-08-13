@@ -463,8 +463,6 @@ public final class WorkingArea {
 		}
 		lineChart.setSeriesType(SeriesType.LINE);
 		lineChart.setData(pluCountMap);
-		lineChart.sethAxis("Plu");
-		lineChart.sethAxis("Count");
 		upcPanel.add(lineChart.getPanel());		
 	}
 
@@ -485,8 +483,6 @@ public final class WorkingArea {
 		}
 		lineChart.setSeriesType(SeriesType.LINE);
 		lineChart.setData(pluCountMap);
-		lineChart.sethAxis("Plu");
-		lineChart.sethAxis("Count");
 		upcPanel.add(lineChart.getPanel());
 		
 	}
