@@ -8,6 +8,7 @@ import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.PieChart;
 import com.googlecode.gwt.charts.client.corechart.PieChartOptions;
+import com.googlecode.gwt.charts.client.options.TextStyle;
 
 public class VFIPieChart {
 	
@@ -33,6 +34,12 @@ public class VFIPieChart {
 			data.addRow(entry, dataMap.get(entry));
 		}
 		PieChartOptions options = PieChartOptions.create();
+		options.setTitle(title);
+		TextStyle textStyle = TextStyle.create();
+		textStyle.setFontName("");
+		textStyle.setBold(false);
+		textStyle.setFontSize(15);
+		options.setTitleTextStyle(textStyle);
 		mopChart.draw(data, options);
 	}	
 	
@@ -54,9 +61,9 @@ public class VFIPieChart {
 	}
 	
 	public HTMLPanel getPanel() {
-		HTMLPanel titlePanel = new HTMLPanel(title);
-		titlePanel.setStyleName("titlePanel");
-		mainPanel.add(titlePanel);
+//		HTMLPanel titlePanel = new HTMLPanel(title);
+//		titlePanel.setStyleName("titlePanel");
+//		mainPanel.add(titlePanel);
 		mainPanel.setStyleName("chartContainer");
 		
 		ChartObject obj = new ChartObject();

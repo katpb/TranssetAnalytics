@@ -11,9 +11,10 @@ import com.googlecode.gwt.charts.client.corechart.ComboChartOptions;
 import com.googlecode.gwt.charts.client.options.Bar;
 import com.googlecode.gwt.charts.client.options.HAxis;
 import com.googlecode.gwt.charts.client.options.Legend;
-import com.googlecode.gwt.charts.client.options.LegendAlignment;
 import com.googlecode.gwt.charts.client.options.LegendPosition;
 import com.googlecode.gwt.charts.client.options.SeriesType;
+import com.googlecode.gwt.charts.client.options.TextStyle;
+import com.googlecode.gwt.charts.client.options.TitlePosition;
 import com.googlecode.gwt.charts.client.options.VAxis;
 
 public class VFIBarChart {
@@ -25,7 +26,7 @@ public class VFIBarChart {
 	private ColumnType columnType2;
 	
 	private String columnName1;
-	private String columnName2;
+	private String columnName2;	
 	private Map dataMap;
 	private String title;
 	private String hAxis;
@@ -43,12 +44,24 @@ public class VFIBarChart {
 			data.addRow(entry, dataMap.get(entry));
 		}
 		ComboChartOptions options = ComboChartOptions.create();		
+		
 		options.setHAxis(HAxis.create(hAxis));
 		options.setVAxis(VAxis.create(vAxis));
 		options.setSeriesType(seriesType);
 		Legend legend = Legend.create();
 		legend.setPosition(LegendPosition.NONE);
 		options.setLegend(legend);
+		options.setTitle(title);
+		TextStyle textStyle = TextStyle.create();
+		textStyle.setFontName("");
+		textStyle.setBold(false);
+		textStyle.setFontSize(15);
+		options.setTitleTextStyle(textStyle);
+		Bar bar = Bar.create();
+		bar.setGroupWidth(40);
+		options.setBar(bar);
+		options.setTitlePosition(TitlePosition.OUT);
+		
 		chart.draw(data, options);
 	}	
 	
@@ -94,10 +107,10 @@ public class VFIBarChart {
 	}
 
 	public HTMLPanel getPanel() {
-		HTMLPanel titlePanel = new HTMLPanel(title);
-		titlePanel.setStyleName("titlePanel");
+//		HTMLPanel titlePanel = new HTMLPanel(title);
+//		titlePanel.setStyleName("titlePanel");
 		mainPanel.setStyleName("chartContainer");
-		mainPanel.add(titlePanel);
+//		mainPanel.add(titlePanel);
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);
 		obj.setRunnable(new Runnable() {

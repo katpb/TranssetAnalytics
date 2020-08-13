@@ -6,6 +6,7 @@
     display: grid;
     gap: 7px;
     background-color: whitesmoke;
+    row-gap: 20px;
 }
 .menubar{
 	display: flex;
@@ -13,13 +14,6 @@
 }
 
 .dataPanel {
- 	/* gap: 5px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: 10px;
-    height: 100%;
-    width: -webkit-fill-available;
-    background-color: whitesmoke; */
     display: grid;
     row-gap: 10px;
 }
@@ -32,9 +26,7 @@
 
 .titlePanel {
 	font-size: large;
-    text-decoration: underline;
     text-transform: capitalize;
-    padding: 4px;
     background-color: white;
 }
 .header-title{
@@ -89,4 +81,5 @@
 
 .chartContainer{
 	background: white;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
