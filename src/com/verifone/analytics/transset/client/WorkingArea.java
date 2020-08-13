@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bson.Document;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -273,7 +271,6 @@ public final class WorkingArea {
 				pluCountMap.put(dailySalesCount.getType(), dailySalesCount.getCount());
 			}
 		}
-		GWT.log(pluCountMap.size() + "");
 		pieChart.setData(pluCountMap);		
 		paymentPanel.add(pieChart.getPanel());
 
@@ -308,7 +305,6 @@ public final class WorkingArea {
 				pluCountMap.put(dailySalesCount.getDate(), dailySalesCount.getCount());
 			}
 		}
-		GWT.log(pluCountMap.size() + "");
 		lineChart.setSeriesType(SeriesType.LINE);
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");
