@@ -1,6 +1,10 @@
 package com.verifone.analytics.transset.server;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +94,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			loadSalesByFuelProduct(iterator);
 			break;
 
-		case "customerWaitTimeByCashier":
+		case "averageWaitTimeByCashier":
 			loadCustomerWaitTimeByCashier(iterator);
 			break;
 
@@ -212,7 +216,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!cashierTrackingDataList.isEmpty()) {
-				collectionsMap.put("customerWaitTimeByCashier",  cashierTrackingDataList);
+				collectionsMap.put("averageWaitTimeByCashier",  cashierTrackingDataList);
 			}
 		}
 	}
@@ -389,8 +393,21 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public static void main(String[] args) {
-		TranssetAnalyserServiceImpl o = new TranssetAnalyserServiceImpl();
-		o.getCollection("");
+		//2020-04-15 18:30:00.000Z
+//				String date = "2020-04-15 18:30:00.000Z";
+//				Date date1 = null;
+//
+//				// parse String datetime to Date
+//				try {
+//				date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+//				System.out.println("time entered: "+  date);
+//				} catch (ParseException e) { e.printStackTrace(); }
+//
+//				// format the Date object then assigns to String
+//				Format formatter;
+//				formatter = new SimpleDateFormat("MM-dd");
+//				String s = formatter.format(date1);
+//				System.out.println(s);
 	}
 
 	@Override

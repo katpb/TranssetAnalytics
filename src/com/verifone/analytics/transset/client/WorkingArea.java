@@ -12,9 +12,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.options.SeriesType;
+import com.verifone.analytics.transset.shared.CashierTrackingData;
 import com.verifone.analytics.transset.shared.CategorySaleCount;
+import com.verifone.analytics.transset.shared.CustomerCount;
 import com.verifone.analytics.transset.shared.DailySalesInfo;
 import com.verifone.analytics.transset.shared.DepartmentSaleCount;
+import com.verifone.analytics.transset.shared.FuelProductSale;
 import com.verifone.analytics.transset.shared.LoyaltyTransactionData;
 import com.verifone.analytics.transset.shared.PluSaleCount;
 import com.verifone.analytics.transset.shared.TransactionData;
@@ -118,7 +121,7 @@ public final class WorkingArea {
 				loadSalesByFuelProduct(entry, result.get(entry));
 				break;
 
-			case "customerWaitTimeByCashier":
+			case "averageWaitTimeByCashier":
 				loadCustomerWaitTimeByCashier(entry, result.get(entry));
 				break;
 
@@ -157,9 +160,9 @@ public final class WorkingArea {
 
 	private void loadSalesByCardType(String entry, List<? extends TransactionData> list) {
 		VFIPieChart pieChart = new VFIPieChart();
-		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Plu description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
+		pieChart.setTitle("Sales By Item Type");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			DailySalesInfo sinfo = (DailySalesInfo)dailySaleInfo;
@@ -170,8 +173,19 @@ public final class WorkingArea {
 	}
 
 	private void loadRecurringCustomerCount(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart pieChart = new VFIBarChart();
+		pieChart.setTitle(entry);
+		pieChart.setDataColumnType1(ColumnType.STRING, "Entry-Method description");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number Time use");
+		Map <String, Integer> customerCountMap = new HashMap<String, Integer>();
+		for (TransactionData txnData : list) {
+			CustomerCount customerCount = (CustomerCount) txnData;
+			customerCountMap.put(customerCount.getCustomerCardNumber(), customerCount.getCount());
+		}
+		pieChart.setData(customerCountMap);
+		pieChart.sethAxis("Entry-Method");
+		pieChart.sethAxis("Count");
+		dataPanel.add(pieChart.getPanel());
 	}
 
 	private void loadDiscountsByLoyaltyProgram(String entry, List<? extends TransactionData> list) {
@@ -191,20 +205,17 @@ public final class WorkingArea {
 	}
 
 	private void loadSalesByEntryMethod(String entry, List<? extends TransactionData> list) {
-		VFIBarChart pieChart = new VFIBarChart();
-		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Entry-Method description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number Time use");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
-		for (TransactionData dailySaleInfo : list) {
-			DailySalesInfo pluSalesCount = (DailySalesInfo)dailySaleInfo;
-			pluCountMap.put(pluSalesCount.getType(), pluSalesCount.getCount());
+		VFIPieChart pieChart = new VFIPieChart();
+		pieChart.setTitle("Sales By MOP Entry Method");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
+		Map <String, Integer> entryCountMap = new HashMap<String, Integer>();
+		for (TransactionData txnData : list) {
+			DailySalesInfo entryCount = (DailySalesInfo) txnData;
+			entryCountMap.put(entryCount.getType(), entryCount.getCount());
 		}
-		pieChart.setData(pluCountMap);
-		pieChart.sethAxis("Entry-Method");
-		pieChart.sethAxis("Count");
+		pieChart.setData(entryCountMap);
 		dataPanel.add(pieChart.getPanel());
-		
 	}
 
 	private void loadSalesByMOP(String entry, List<? extends TransactionData> list) {
@@ -226,8 +237,20 @@ public final class WorkingArea {
 	}
 
 	private void loadAverageTransactionAmount(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart lineChart = new VFIBarChart();
+		lineChart.setSeriesType(SeriesType.LINE);
+		lineChart.setTitle("Average Transaction Amount");
+		lineChart.setDataColumnType1(ColumnType.STRING, "");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
+		Map <String, Double> custWaitTimeMap = new HashMap<String, Double>();
+		for (TransactionData txnData : list) {
+			DailySalesInfo avgTxnTime = (DailySalesInfo) txnData;
+			custWaitTimeMap.put(avgTxnTime.getDate(), avgTxnTime.getAvgAmount());
+		}
+		lineChart.setData(custWaitTimeMap);
+		lineChart.sethAxis("Date");
+		lineChart.setvAxis("Average Amount");
+		dataPanel.add(lineChart.getPanel());
 	}
 
 	private void loadDailySalesCount(String entry, List<? extends TransactionData> list) {
@@ -253,13 +276,36 @@ public final class WorkingArea {
 	}
 
 	private void loadCustomerWaitTimeByCashier(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart lineChart = new VFIBarChart();
+		lineChart.setSeriesType(SeriesType.LINE);
+		lineChart.setTitle("Customer Waiting Time By Cashier");
+		lineChart.setDataColumnType1(ColumnType.STRING, "");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
+		Map <String, Double> custWaitTimeMap = new HashMap<String, Double>();
+		for (TransactionData txnData : list) {
+			CashierTrackingData custWaitTime = (CashierTrackingData) txnData;
+			custWaitTimeMap.put(custWaitTime.getCashierName(), custWaitTime.getAvgCustomerWaitTime());
+		}
+		lineChart.setData(custWaitTimeMap);
+		lineChart.sethAxis("Cashier Name");
+		lineChart.setvAxis("Customer Wait Time");
+		dataPanel.add(lineChart.getPanel());
 	}
 
 	private void loadSalesByFuelProduct(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart barChart = new VFIBarChart();
+		barChart.setTitle("Sales By Fuel Products");
+		barChart.setDataColumnType1(ColumnType.STRING, "");
+		barChart.setDataColumnType2(ColumnType.NUMBER, "");
+		Map <String, Double> fuelSalesMap = new HashMap<String, Double>();
+		for (TransactionData fuelSalesData : list) {
+			FuelProductSale fuelSale = (FuelProductSale) fuelSalesData;
+			fuelSalesMap.put(fuelSale.getDescription(), fuelSale.getAmount());
+		}
+		barChart.setData(fuelSalesMap);
+		barChart.sethAxis("Amount");
+		barChart.setvAxis("Fuel Product");
+		dataPanel.add(barChart.getPanel());
 	}
 
 	private void loadSalesByDepartmentBottom(String entry, List<? extends TransactionData> list) {
@@ -378,5 +424,5 @@ public final class WorkingArea {
 		dataPanel.add(lineChart.getPanel());
 		
 	}
-
+	
 }
