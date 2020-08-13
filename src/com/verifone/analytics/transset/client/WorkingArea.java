@@ -130,11 +130,11 @@ public final class WorkingArea {
 		for (String entry :result.keySet()) {
 			GWT.log("Entries : " + entry);
 			switch (entry) {
-			case "salesByUPCTop":
+			case "salesByUpcTop":
 				loadSalesByUPCTop(entry, result.get(entry));
 				break;
 
-			case "salesByUPCBottom":
+			case "salesByUpcBottom":
 				loadSalesByUPBottom(entry, result.get(entry));
 				break;
 
