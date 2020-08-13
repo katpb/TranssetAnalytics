@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 
@@ -390,6 +391,13 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 	public static void main(String[] args) {
 		TranssetAnalyserServiceImpl o = new TranssetAnalyserServiceImpl();
 		o.getCollection("");
+	}
+
+	@Override
+	public List<String> getSiteName() {
+		List<String> siteList = siteMap.keySet().stream()
+				.collect(Collectors.toList());
+		return siteList;
 	}
 
 
