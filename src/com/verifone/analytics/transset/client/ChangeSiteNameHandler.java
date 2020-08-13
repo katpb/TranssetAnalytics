@@ -24,7 +24,7 @@ public class ChangeSiteNameHandler implements ChangeHandler {
 
 					@Override
 					public void onSuccess(Map<String, List<? extends TransactionData>> result) {
-						GWT.log("" + result.toString());
+						WorkingArea.getInstance().setData(result);
 					}
 				});
 
