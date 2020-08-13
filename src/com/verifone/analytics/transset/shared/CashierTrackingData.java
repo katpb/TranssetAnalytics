@@ -4,6 +4,10 @@ public class CashierTrackingData extends TransactionData {
 	
 	private String cashierName;
 	private Double avgCustomerWaitTime;
+	
+	public CashierTrackingData() {
+		super();
+	}
 
 	public CashierTrackingData(String date, String cashierName, Double avgCustomerWaitTime) {
 		super(date);

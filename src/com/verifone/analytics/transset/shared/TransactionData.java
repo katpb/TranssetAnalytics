@@ -1,10 +1,17 @@
 package com.verifone.analytics.transset.shared;
 
-public class TransactionData {
+
+import java.io.Serializable;
+
+public class TransactionData implements Serializable {
 	
 	private String date;
 	private String siteId;
 	private String transactionId;
+	
+	public TransactionData() {
+		super();
+	}
 
 	public TransactionData(String date) {
 		this.date = date;

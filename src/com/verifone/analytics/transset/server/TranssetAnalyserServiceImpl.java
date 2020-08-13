@@ -28,8 +28,8 @@ import com.verifone.analytics.transset.shared.TransactionData;
 @SuppressWarnings("serial")
 public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements TranssetAnalyserService {
 	
-	private static Map<String, List<TransactionData>> collectionsMap = null;
-	private static Map<String, Map<String, List<TransactionData>>> siteMap = null;
+	private static Map<String, List<? extends TransactionData>> collectionsMap = null;
+	private static Map<String, Map<String, List<? extends TransactionData>>> siteMap = null;
 	
 	public TranssetAnalyserServiceImpl() {
 		super();
@@ -42,18 +42,18 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 	 */
 	private static void loadResults() {
 		int index = 5;
-		siteMap = new HashMap<String, Map<String, List<TransactionData>>>();
+		siteMap = new HashMap<String, Map<String, List<? extends TransactionData>>>();
 		try(MongoClient connection = new MongoClient("localhost", 27017);){
 			while(index >= 5 && index <= 9) {
 				String dbName = "site" + index + "ResultsDB";
 				MongoDatabase database = connection.getDatabase(dbName);
-				collectionsMap = new HashMap<String, List<TransactionData>>();
+				collectionsMap = new HashMap<String, List<? extends TransactionData>>();
 				for (String collection : database.listCollectionNames()) {
 					try(MongoCursor<Document> iterator = database.getCollection(collection).find().iterator();) {
 						loadCollectionData(iterator, collection);
 					}
 				}
-				siteMap.put("site" + index, (Map) collectionsMap);
+				siteMap.put("site" + index, collectionsMap);
 				index++;
 			}
 		}
@@ -140,7 +140,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!pluSaleCount.isEmpty()) {
-				collectionsMap.put(isTopList ? "salesByUPCTop" : "salesByUPCBottom", (List) pluSaleCount);
+				collectionsMap.put(isTopList ? "salesByUPCTop" : "salesByUPCBottom",  pluSaleCount);
 			}
 		}
 	}
@@ -158,7 +158,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!catSaleCount.isEmpty()) {
-				collectionsMap.put(isTopList ? "salesByCategoryTop" : "salesByCategoryBottom", (List) catSaleCount);
+				collectionsMap.put(isTopList ? "salesByCategoryTop" : "salesByCategoryBottom",  catSaleCount);
 			}
 		}
 	}
@@ -176,7 +176,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!deptSaleCount.isEmpty()) {
-				collectionsMap.put(isTopList ? "salesByDepartmentTop" : "salesByDepartmentBottom", (List) deptSaleCount);
+				collectionsMap.put(isTopList ? "salesByDepartmentTop" : "salesByDepartmentBottom",  deptSaleCount);
 			}
 		}
 	}
@@ -194,7 +194,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!fuelProductSales.isEmpty()) {
-				collectionsMap.put("salesByFuelProduct", (List) fuelProductSales);
+				collectionsMap.put("salesByFuelProduct",  fuelProductSales);
 			}
 		}
 	}
@@ -211,7 +211,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!cashierTrackingDataList.isEmpty()) {
-				collectionsMap.put("customerWaitTimeByCashier", (List) cashierTrackingDataList);
+				collectionsMap.put("customerWaitTimeByCashier",  cashierTrackingDataList);
 			}
 		}
 	}
@@ -227,7 +227,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!dailySaleCounts.isEmpty()) {
-				collectionsMap.put("dailySalesCount", (List) dailySaleCounts);
+				collectionsMap.put("dailySalesCount",  dailySaleCounts);
 			}
 		}
 	}
@@ -243,7 +243,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!dailySaleAmounts.isEmpty()) {
-				collectionsMap.put("averageTransactionAmount", (List) dailySaleAmounts);
+				collectionsMap.put("averageTransactionAmount",  dailySaleAmounts);
 			}
 		}		
 	}
@@ -260,7 +260,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!dailySaleMopCounts.isEmpty()) {
-				collectionsMap.put("salesByMOP", (List) dailySaleMopCounts);
+				collectionsMap.put("salesByMOP",  dailySaleMopCounts);
 			}
 		}
 		
@@ -278,7 +278,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!dailySaleCardTypeCounts.isEmpty()) {
-				collectionsMap.put("salesByCardType", (List) dailySaleCardTypeCounts);
+				collectionsMap.put("salesByCardType", dailySaleCardTypeCounts);
 			}
 		}
 		
@@ -286,7 +286,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 
 	private static void loadSalesByEntryMethod(MongoCursor<Document> iterator) {
 		if(iterator != null) {
-			List<DailySalesInfo> dailySaleEntryMethodCounts = new ArrayList<DailySalesInfo>();
+			List<TransactionData> dailySaleEntryMethodCounts = new ArrayList<TransactionData>();
 			while(iterator.hasNext()) {
 				Document doc = iterator.next();
 				String date = String.valueOf(doc.get("Date"));
@@ -296,14 +296,14 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!dailySaleEntryMethodCounts.isEmpty()) {
-				collectionsMap.put("salesByEntryMethod", (List) dailySaleEntryMethodCounts);
+				collectionsMap.put("salesByEntryMethod", dailySaleEntryMethodCounts);
 			}
 		}
 	}
 
 	private static void loadDiscountsByLoyaltyProgram(MongoCursor<Document> iterator) {
 		if(iterator != null) {
-			List<LoyaltyTransactionData> loyaltyTxnDataList = new ArrayList<LoyaltyTransactionData>();
+			List<TransactionData> loyaltyTxnDataList = new ArrayList<TransactionData>();
 			while(iterator.hasNext()) {
 				Document doc = iterator.next();
 				String date = String.valueOf(doc.get("Date"));
@@ -313,7 +313,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!loyaltyTxnDataList.isEmpty()) {
-				collectionsMap.put("discountsByLoyaltyProgram", (List) loyaltyTxnDataList);
+				collectionsMap.put("discountsByLoyaltyProgram", loyaltyTxnDataList);
 			}
 		}
 		
@@ -331,7 +331,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			}
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!customerCounts.isEmpty()) {
-				collectionsMap.put("recurringCustomerCount", (List) customerCounts);
+				collectionsMap.put("recurringCustomerCount",  customerCounts);
 			}
 		}
 		
@@ -383,7 +383,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public Map<String, List<TransactionData>> getCollection(String siteId) throws IllegalArgumentException {
+	public Map<String, List<? extends TransactionData>> getCollection(String siteId) throws IllegalArgumentException {
 		return siteMap.get(siteId);
 	}
 

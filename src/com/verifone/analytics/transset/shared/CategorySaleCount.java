@@ -4,6 +4,10 @@ public class CategorySaleCount extends TransactionData {
 	
 	private MerchandiseInfo cat = null;
 	private int count = 0;
+	
+	public CategorySaleCount() {
+		super();
+	}
 
 	public CategorySaleCount(String date, String catNum, String catDesc, int count) {
 		super(date);

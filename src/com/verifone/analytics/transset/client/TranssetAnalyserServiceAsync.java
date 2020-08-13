@@ -7,5 +7,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.verifone.analytics.transset.shared.TransactionData;
 
 public interface TranssetAnalyserServiceAsync {
-	void getCollection(String siteId, AsyncCallback<Map<String, List<TransactionData>>> callback) throws IllegalArgumentException;
+	void getCollection(String siteId, AsyncCallback<Map<String, List<? extends TransactionData>>> callback) throws IllegalArgumentException;
 }

@@ -1,8 +1,14 @@
 package com.verifone.analytics.transset.shared;
 
-public class MerchandiseInfo {
+import java.io.Serializable;
+
+public class MerchandiseInfo implements Serializable {
 	private String code;
 	private String description;
+
+	public MerchandiseInfo() {
+		super();
+	}
 	
 	public MerchandiseInfo(String code, String description) {
 		super();

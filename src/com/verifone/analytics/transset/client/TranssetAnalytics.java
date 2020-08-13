@@ -124,7 +124,7 @@ public class TranssetAnalytics implements EntryPoint {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
-				dbService.getCollection(textToServer, new AsyncCallback<Map<String, List<TransactionData>>>() {
+				dbService.getCollection(textToServer, new AsyncCallback<Map<String, List<? extends TransactionData>>>() {
 					public void onFailure(Throwable caught) {
 						// Show the RPC error message to the user
 						dialogBox.setText("Remote Procedure Call - Failure" + caught);
@@ -135,7 +135,7 @@ public class TranssetAnalytics implements EntryPoint {
 					}
 
 					@Override
-					public void onSuccess(Map<String, List<TransactionData>> result) {
+					public void onSuccess(Map<String, List<? extends TransactionData>> result) {
 						String resultString = null;
 						for(Entry entry : result.entrySet()) {
 							resultString += entry.getKey() + ", ";

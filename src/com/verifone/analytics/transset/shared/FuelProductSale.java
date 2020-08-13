@@ -2,6 +2,10 @@ package com.verifone.analytics.transset.shared;
 
 public class FuelProductSale extends TransactionData {
 
+	public FuelProductSale() {
+		super();
+	}
+	
 	public FuelProductSale(String date, String description, Double volume, Double amount) {
 		super(date);
 		this.description = description;

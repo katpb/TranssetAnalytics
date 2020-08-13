@@ -4,6 +4,10 @@ public class DepartmentSaleCount extends TransactionData {
 	
 	private MerchandiseInfo dept = null;
 	private int count = 0;
+	
+	public DepartmentSaleCount() {
+		super();
+	}
 
 	public DepartmentSaleCount(String date, String deptNum, String deptDesc, int count) {
 		super(date);

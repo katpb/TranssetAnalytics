@@ -6,6 +6,10 @@ public class DailySalesInfo extends TransactionData {
 	private double avgAmount = 0;
 	private String type = null;
 	
+	public DailySalesInfo() {
+		super();
+	}
+	
 	public DailySalesInfo(String date, int count) {
 		super(date);
 		this.count = count;

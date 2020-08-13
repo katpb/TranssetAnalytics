@@ -12,5 +12,5 @@ import com.verifone.analytics.transset.shared.TransactionData;
  */
 @RemoteServiceRelativePath("transsetAnalyserService")
 public interface TranssetAnalyserService extends RemoteService {
-	Map<String, List<TransactionData>> getCollection(String siteId) throws IllegalArgumentException;
+	Map<String, List<? extends TransactionData>> getCollection(String siteId) throws IllegalArgumentException;
 }
