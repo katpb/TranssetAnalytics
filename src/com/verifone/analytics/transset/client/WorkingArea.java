@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -210,19 +212,24 @@ public final class WorkingArea {
 	}
 
 	private void loadRecurringCustomerCount(String entry, List<? extends TransactionData> list) {
-		VFIBarChart pieChart = new VFIBarChart();
-		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
+		VFIBarChart barChart = new VFIBarChart();
+		barChart.setTitle("Recurring Customer Count");
+		barChart.setDataColumnType1(ColumnType.STRING, "");
+		barChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> customerCountMap = new HashMap<String, Integer>();
 		for (TransactionData txnData : list) {
 			CustomerCount customerCount = (CustomerCount) txnData;
-			customerCountMap.put(customerCount.getCustomerCardNumber(), customerCount.getCount());
+			String cardNumber = customerCount.getCustomerCardNumber();
+			if(cardNumber != null) {
+				cardNumber = cardNumber.substring(cardNumber.length() - 4);
+			}
+			customerCountMap.put(cardNumber, customerCount.getCount());
 		}
-		pieChart.setData(customerCountMap);
-		pieChart.sethAxis("Entry-Method");
-		pieChart.sethAxis("Count");
+		barChart.setData(customerCountMap);
 		salesCustCountPanel.add(pieChart.getPanel());
+		barChart.sethAxis("CustomerCard");
+		barChart.setvAxis("Count");
+		dataPanel.add(barChart.getPanel());
 	}
 
 	private void loadDiscountsByLoyaltyProgram(String entry, List<? extends TransactionData> list) {
@@ -397,7 +404,7 @@ public final class WorkingArea {
 		barChart.setTitle(entry);
 		barChart.setDataColumnType1(ColumnType.STRING, "");
 		barChart.setDataColumnType2(ColumnType.NUMBER, "");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		for (TransactionData dailySaleInfo : list) {
 			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
 			pluCountMap.put(catSalesCount.getCategoryDesc(), catSalesCount.getCount());
@@ -413,9 +420,9 @@ public final class WorkingArea {
 		pieChart.setTitle(entry);
 		pieChart.setDataColumnType1(ColumnType.STRING, "");
 		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		for (TransactionData dailySaleInfo : list) {
-			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
+			CategorySaleCount catSalesCount = (CategorySaleCount) dailySaleInfo;
 			pluCountMap.put(catSalesCount.getCategoryDesc(), catSalesCount.getCount());
 		}
 		pieChart.setData(pluCountMap);
