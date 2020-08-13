@@ -16,6 +16,7 @@ import com.verifone.analytics.transset.shared.CashierTrackingData;
 import com.verifone.analytics.transset.shared.CategorySaleCount;
 import com.verifone.analytics.transset.shared.CustomerCount;
 import com.verifone.analytics.transset.shared.DailySalesInfo;
+import com.verifone.analytics.transset.shared.DepartmentSaleCount;
 import com.verifone.analytics.transset.shared.FuelProductSale;
 import com.verifone.analytics.transset.shared.LoyaltyTransactionData;
 import com.verifone.analytics.transset.shared.PluSaleCount;
@@ -327,13 +328,37 @@ public final class WorkingArea {
 	}
 
 	private void loadSalesByDepartmentBottom(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart pieChart = new VFIBarChart();
+		pieChart.setTitle(entry);
+		pieChart.setDataColumnType1(ColumnType.STRING, "Department description");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		pieChart.setSeriesType(SeriesType.BARS);
+		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
+		for (TransactionData dailySaleInfo : list) {
+			DepartmentSaleCount deptSalesCount = (DepartmentSaleCount)dailySaleInfo;
+			deptCountMap.put(deptSalesCount.getDeptDesc(), deptSalesCount.getCount());
+		}
+		pieChart.setData(deptCountMap);
+		pieChart.sethAxis("Department");
+		pieChart.sethAxis("Count");
+		dataPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByDepartmentTop(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
+		VFIBarChart pieChart = new VFIBarChart();
+		pieChart.setTitle(entry);
+		pieChart.setDataColumnType1(ColumnType.STRING, "Department description");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		pieChart.setSeriesType(SeriesType.AREA);
+		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
+		for (TransactionData dailySaleInfo : list) {
+			DepartmentSaleCount deptSalesCount = (DepartmentSaleCount)dailySaleInfo;
+			deptCountMap.put(deptSalesCount.getDeptDesc(), deptSalesCount.getCount());
+		}
+		pieChart.setData(deptCountMap);
+		pieChart.sethAxis("Department");
+		pieChart.sethAxis("Count");
+		dataPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByCategoryBottom(String entry, List<? extends TransactionData> list) {
@@ -368,7 +393,6 @@ public final class WorkingArea {
 		pieChart.sethAxis("Category");
 		pieChart.sethAxis("Count");
 		dataPanel.add(pieChart.getPanel());
-		
 	}
 
 	private void loadSalesByUPBottom(String entry, List<? extends TransactionData> list) {
