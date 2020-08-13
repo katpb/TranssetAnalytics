@@ -7,6 +7,7 @@ import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.PieChart;
+import com.googlecode.gwt.charts.client.corechart.PieChartOptions;
 
 public class VFIPieChart {
 	
@@ -31,7 +32,9 @@ public class VFIPieChart {
 		for (Object entry : dataMap.keySet()) {
 			data.addRow(entry, dataMap.get(entry));
 		}
-		mopChart.draw(data);
+		PieChartOptions options = PieChartOptions.create();
+		options.setTitle(title);
+		mopChart.draw(data, options);
 	}	
 	
 	public void setTitle (String title ) {
