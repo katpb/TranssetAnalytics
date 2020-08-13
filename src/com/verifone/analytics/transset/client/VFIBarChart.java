@@ -89,6 +89,7 @@ public class VFIBarChart {
 
 	public HTMLPanel getPanel() {
 		HTMLPanel titlePanel = new HTMLPanel(title);
+		titlePanel.setStyleName("titlePanel");
 		mainPanel.add(titlePanel);
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);

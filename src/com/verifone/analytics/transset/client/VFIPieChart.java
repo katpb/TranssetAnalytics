@@ -53,8 +53,10 @@ public class VFIPieChart {
 	
 	public HTMLPanel getPanel() {
 		HTMLPanel titlePanel = new HTMLPanel(title);
+		titlePanel.setStyleName("titlePanel");
 		mainPanel.add(titlePanel);
-		//drawPieChart();
+		mainPanel.setStyleName("pieChartPanel");
+		
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);
 		obj.setRunnable(new Runnable() {
