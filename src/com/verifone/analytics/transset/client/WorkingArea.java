@@ -138,13 +138,13 @@ public final class WorkingArea {
 				loadSalesByUPBottom(entry, result.get(entry));
 				break;
 
-			case "salesByCategoryTop":
-				loadSalesByCategoryTop(entry, result.get(entry));
-				break;
-
-			case "salesByCategoryBottom":
-				loadSalesByCategoryBottom(entry, result.get(entry));
-				break;
+//			case "salesByCategoryTop":
+//				loadSalesByCategoryTop(entry, result.get(entry));
+//				break;
+//
+//			case "salesByCategoryBottom":
+//				loadSalesByCategoryBottom(entry, result.get(entry));
+//				break;
 
 			case "salesByDepartmentTop":
 				loadSalesByDepartmentTop(entry, result.get(entry));
@@ -449,10 +449,10 @@ public final class WorkingArea {
 	private void loadSalesByUPBottom(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setTitle(entry);
-		lineChart.setDataColumnType1(ColumnType.STRING, "");
-		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
-		int count = 0;
+		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
+		int count =0;
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
 			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());
@@ -471,7 +471,7 @@ public final class WorkingArea {
 		lineChart.setTitle(entry);
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		int count =0;
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;

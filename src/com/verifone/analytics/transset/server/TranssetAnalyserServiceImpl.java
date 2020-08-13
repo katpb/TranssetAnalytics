@@ -139,7 +139,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 				String date = String.valueOf(doc.get("Date"));
 				String num = String.valueOf(doc.get("UPCNum"));
 				String desc = String.valueOf(doc.get("UPCDesc"));
-				Integer count = getIntegerValue(String.valueOf(doc.get("Count")));
+				Double count = getDoubleValue(String.valueOf(doc.get("Count")));
 				pluSaleCount.add(new PluSaleCount(date, num, desc, count));
 			}
 			
