@@ -5,25 +5,29 @@
     width: 100%;
     display: grid;
     gap: 7px;
+    background-color: whitesmoke;
 }
 .menubar{
 	display: flex;
     width: 100%;
-    justify-content: flex-end;
 }
 
 .dataPanel {
- 	gap: 5px;
+ 	/* gap: 5px;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-gap: 10px;
     height: 100%;
     width: -webkit-fill-available;
+    background-color: whitesmoke; */
+    display: grid;
+    row-gap: 10px;
 }
 .listBox {
     font-size: medium;
-    height: 25px;
+    height: 24px;
     width: 100px;
+    margin-left: 10px;
 }
 
 .titlePanel {
@@ -32,4 +36,57 @@
     text-transform: capitalize;
     padding: 4px;
     background-color: white;
+}
+.header-title{
+	font-size: x-large;
+    text-align: center;
+    transform: translateX(100%);
+}
+
+.storeSelector{
+	font-size: small;
+}
+
+.upcpanel {
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+.categoryPanel{
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+.departmentPanel{
+	display: grid;
+    /* grid-template-columns: 50% 50%; */
+    grid-gap: 10px;
+}
+
+.fuelPanel{
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+
+.paymentPanel{
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+
+.avgPanel{
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+
+.salesCustCountPanel {
+	display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+}
+
+.chartContainer{
+	background: white;
 }

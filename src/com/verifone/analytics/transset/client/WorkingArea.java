@@ -9,7 +9,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.options.SeriesType;
 import com.verifone.analytics.transset.shared.CashierTrackingData;
@@ -28,9 +27,21 @@ public final class WorkingArea {
 	private RootPanel root = RootPanel.get();
 	private HTMLPanel mainBoard = new HTMLPanel("");
 	private HTMLPanel menubar = new HTMLPanel("");
-	private HTMLPanel dataPanel = new HTMLPanel("");
-	private HTMLPanel avgPanel = new HTMLPanel("");
+	private HTMLPanel dataPanel = new HTMLPanel("");	
+	
+	// Different container 
+	private HTMLPanel upcPanel = new HTMLPanel("");
+	private HTMLPanel categotyPanel = new HTMLPanel("");
+	private HTMLPanel departmentPanel = new HTMLPanel("");
+	
 	private HTMLPanel fuelPanel = new HTMLPanel("");
+	
+	private HTMLPanel paymentPanel = new HTMLPanel("");
+	
+	private HTMLPanel avgPanel = new HTMLPanel("");
+	
+	private HTMLPanel salesCustCountPanel = new HTMLPanel("");
+	
 	private ListBox siteList = new ListBox();
 	private static final TranssetAnalyserServiceAsync dbService = GWT.create(TranssetAnalyserService.class);
 	
@@ -48,20 +59,44 @@ public final class WorkingArea {
 		mainBoard.setStyleName("dashboard");
 		siteList.setStyleName("listBox");
 		dataPanel.setStyleName("dataPanel");
+		
+		upcPanel.setStyleName("upcpanel");
+		categotyPanel.setStyleName("categoryPanel");
+		departmentPanel.setStyleName("departmentPanel");
+		paymentPanel.setStyleName("paymentPanel");
+		
+		fuelPanel.setStyleName("fuelPanel");
+		
+		avgPanel.setStyleName("avgPanel");
+		
 		siteList.addChangeHandler(new ChangeSiteNameHandler());
 		
-		avgPanel.setStyleName("dataPanel");
-		fuelPanel.setStyleName("dataPanel");
+		salesCustCountPanel.setStyleName("salesCustCountPanel");
 		
 		// fill data to List box  
 		addSiteNames();
 
-		menubar.add(siteList);
-
+		siteList.addChangeHandler(new ChangeSiteNameHandler());
+		HTMLPanel storeSelector = new HTMLPanel("Store Locator");
+		storeSelector.add(siteList);
+		storeSelector.setStyleName("storeSelector");
+		
+		menubar.add(storeSelector);
+		HTMLPanel title = new HTMLPanel("C-Store Analytics DashBoard");
+		title.setStyleName("header-title");
+		menubar.add(title);
+		
+		// Data table added element 
+		dataPanel.add(upcPanel);
+		dataPanel.add(categotyPanel);
+		dataPanel.add(departmentPanel);
+		dataPanel.add(paymentPanel);
+		dataPanel.add(fuelPanel);
+		dataPanel.add(avgPanel);
+		dataPanel.add(salesCustCountPanel);
+		
 		mainBoard.add(menubar);
 		mainBoard.add(dataPanel);
-		mainBoard.add(fuelPanel);
-		mainBoard.add(avgPanel);
 		root.add(mainBoard);
 	}
 
@@ -85,17 +120,12 @@ public final class WorkingArea {
 		});		
 	}
 
-	public void addToDataPanel(Widget widget) {
-		dataPanel.clear();
-		dataPanel.add(widget);
-	}
-
 	public TranssetAnalyserServiceAsync getDbService() {
 		return dbService;
 	}
 
 	public void setData(Map<String, List<? extends TransactionData>> result) {
-		dataPanel.clear();
+		clearPanels();
 		// Get the result and draw chart
 		for (String entry :result.keySet()) {
 			switch (entry) {
@@ -125,6 +155,7 @@ public final class WorkingArea {
 
 			case "salesByFuelProduct":
 				loadSalesByFuelProduct(entry, result.get(entry));
+				//loadFuelSaleTable(entry, result.get(entry));
 				break;
 
 			case "averageWaitTimeByCashier":
@@ -175,14 +206,14 @@ public final class WorkingArea {
 			pluCountMap.put(sinfo.getType(), sinfo.getCount());
 		}
 		pieChart.setData(pluCountMap);
-		dataPanel.add(pieChart.getPanel());
+		paymentPanel.add(pieChart.getPanel());
 	}
 
 	private void loadRecurringCustomerCount(String entry, List<? extends TransactionData> list) {
 		VFIBarChart pieChart = new VFIBarChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Entry-Method description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number Time use");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> customerCountMap = new HashMap<String, Integer>();
 		for (TransactionData txnData : list) {
 			CustomerCount customerCount = (CustomerCount) txnData;
@@ -191,21 +222,21 @@ public final class WorkingArea {
 		pieChart.setData(customerCountMap);
 		pieChart.sethAxis("Entry-Method");
 		pieChart.sethAxis("Count");
-		dataPanel.add(pieChart.getPanel());
+		salesCustCountPanel.add(pieChart.getPanel());
 	}
 
 	private void loadDiscountsByLoyaltyProgram(String entry, List<? extends TransactionData> list) {
 		VFIPieChart pieChart = new VFIPieChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "LoyalityPrograms");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Discount Amount");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		for (TransactionData dailySaleInfo : list) {
 			LoyaltyTransactionData loyalData = (LoyaltyTransactionData)dailySaleInfo;
 			pluCountMap.put(loyalData.getLoyaltyProgram(), loyalData.getDiscAmount());
 		}
 		pieChart.setData(pluCountMap);
-		dataPanel.add(pieChart.getPanel());
+		paymentPanel.add(pieChart.getPanel());
 
 		
 	}
@@ -221,14 +252,14 @@ public final class WorkingArea {
 			entryCountMap.put(entryCount.getType(), entryCount.getCount());
 		}
 		pieChart.setData(entryCountMap);
-		dataPanel.add(pieChart.getPanel());
+		paymentPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByMOP(String entry, List<? extends TransactionData> list) {
 		VFIPieChart pieChart = new VFIPieChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Date");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map<String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			DailySalesInfo dailySalesCount = (DailySalesInfo) dailySaleInfo;
@@ -238,7 +269,7 @@ public final class WorkingArea {
 		}
 		GWT.log(pluCountMap.size() + "");
 		pieChart.setData(pluCountMap);		
-		dataPanel.add(pieChart.getPanel());
+		paymentPanel.add(pieChart.getPanel());
 
 	}
 
@@ -262,8 +293,8 @@ public final class WorkingArea {
 	private void loadDailySalesCount(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setTitle(entry);
-		lineChart.setDataColumnType1(ColumnType.STRING, "Date");
-		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		lineChart.setDataColumnType1(ColumnType.STRING, "");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			DailySalesInfo dailySalesCount = (DailySalesInfo)dailySaleInfo;
@@ -276,7 +307,7 @@ public final class WorkingArea {
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");
 		lineChart.sethAxis("Count");
-		dataPanel.add(lineChart.getPanel());
+		salesCustCountPanel.add(lineChart.getPanel());
 
 		
 	}
@@ -330,8 +361,8 @@ public final class WorkingArea {
 	private void loadSalesByDepartmentBottom(String entry, List<? extends TransactionData> list) {
 		VFIBarChart pieChart = new VFIBarChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Department description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		pieChart.setSeriesType(SeriesType.BARS);
 		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
@@ -341,31 +372,31 @@ public final class WorkingArea {
 		pieChart.setData(deptCountMap);
 		pieChart.sethAxis("Department");
 		pieChart.sethAxis("Count");
-		dataPanel.add(pieChart.getPanel());
+		departmentPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByDepartmentTop(String entry, List<? extends TransactionData> list) {
 		VFIBarChart pieChart = new VFIBarChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Department description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
-		pieChart.setSeriesType(SeriesType.AREA);
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
+		pieChart.setSeriesType(SeriesType.BARS);
 		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			DepartmentSaleCount deptSalesCount = (DepartmentSaleCount)dailySaleInfo;
-			deptCountMap.put(deptSalesCount.getDeptDesc(), deptSalesCount.getCount());
+			deptCountMap.put(deptSalesCount.getDeptDesc().substring(0, 8), deptSalesCount.getCount());
 		}
 		pieChart.setData(deptCountMap);
 		pieChart.sethAxis("Department");
 		pieChart.sethAxis("Count");
-		dataPanel.add(pieChart.getPanel());
+		departmentPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByCategoryBottom(String entry, List<? extends TransactionData> list) {
 		VFIBarChart barChart = new VFIBarChart();
 		barChart.setTitle(entry);
-		barChart.setDataColumnType1(ColumnType.STRING, "Category description");
-		barChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		barChart.setDataColumnType1(ColumnType.STRING, "");
+		barChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
@@ -374,16 +405,14 @@ public final class WorkingArea {
 		barChart.setData(pluCountMap);
 		barChart.sethAxis("Category");
 		barChart.sethAxis("Count");
-		dataPanel.add(barChart.getPanel());
-		
-		
+		categotyPanel.add(barChart.getPanel());		
 	}
 
 	private void loadSalesByCategoryTop(String entry, List<? extends TransactionData> list) {
 		VFIBarChart pieChart = new VFIBarChart();
 		pieChart.setTitle(entry);
-		pieChart.setDataColumnType1(ColumnType.STRING, "Category description");
-		pieChart.setDataColumnType2(ColumnType.NUMBER, "Number of Sales");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
@@ -392,14 +421,14 @@ public final class WorkingArea {
 		pieChart.setData(pluCountMap);
 		pieChart.sethAxis("Category");
 		pieChart.sethAxis("Count");
-		dataPanel.add(pieChart.getPanel());
+		categotyPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByUPBottom(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setTitle(entry);
-		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
-		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
+		lineChart.setDataColumnType1(ColumnType.STRING, "");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
@@ -410,26 +439,16 @@ public final class WorkingArea {
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");
 		lineChart.sethAxis("Count");
-		dataPanel.add(lineChart.getPanel());
+		upcPanel.add(lineChart.getPanel());
 
-		
-	}
-
-	private void loadSalesByCategory(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void loadSalesByUPC(String entry, List<? extends TransactionData> list) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	private void loadSalesByUPCTop(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setTitle(entry);
-		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
-		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
+		lineChart.setDataColumnType1(ColumnType.STRING, "");
+		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
@@ -440,7 +459,29 @@ public final class WorkingArea {
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");
 		lineChart.sethAxis("Count");
-		dataPanel.add(lineChart.getPanel());
+		upcPanel.add(lineChart.getPanel());
+		
+	}
+//	private void loadFuelSaleTable(String entry, List<? extends TransactionData> list) {
+//		VFITable table = new VFITable();
+//		table.setTitle("Fuel Product Sale Table");
+//		List<FuelProductSale> fuelProductSaleList = new ArrayList<FuelProductSale>();
+//		for (TransactionData trData : list) {
+//			FuelProductSale fuelProdSale = (FuelProductSale)trData;
+//			fuelProductSaleList.add(fuelProdSale);			
+//		}
+//		table.setDataList(fuelProductSaleList);
+//		fuelPanel.add(table.getPanel());
+//	}
+	
+	private void clearPanels() {
+		upcPanel.clear();
+		categotyPanel.clear();
+		departmentPanel.clear();
+		fuelPanel.clear();
+		paymentPanel.clear();
+		avgPanel.clear();
+		salesCustCountPanel.clear();
 		
 	}
 	

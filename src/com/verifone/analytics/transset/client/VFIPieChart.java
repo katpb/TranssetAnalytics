@@ -33,7 +33,6 @@ public class VFIPieChart {
 			data.addRow(entry, dataMap.get(entry));
 		}
 		PieChartOptions options = PieChartOptions.create();
-		options.setTitle(title);
 		mopChart.draw(data, options);
 	}	
 	
@@ -58,7 +57,7 @@ public class VFIPieChart {
 		HTMLPanel titlePanel = new HTMLPanel(title);
 		titlePanel.setStyleName("titlePanel");
 		mainPanel.add(titlePanel);
-		mainPanel.setStyleName("pieChartPanel");
+		mainPanel.setStyleName("chartContainer");
 		
 		ChartObject obj = new ChartObject();
 		obj.setCorechart(ChartPackage.CORECHART);
