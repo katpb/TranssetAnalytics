@@ -28,6 +28,8 @@ public final class WorkingArea {
 	private HTMLPanel mainBoard = new HTMLPanel("");
 	private HTMLPanel menubar = new HTMLPanel("");
 	private HTMLPanel dataPanel = new HTMLPanel("");
+	private HTMLPanel avgPanel = new HTMLPanel("");
+	private HTMLPanel fuelPanel = new HTMLPanel("");
 	private ListBox siteList = new ListBox();
 	private static final TranssetAnalyserServiceAsync dbService = GWT.create(TranssetAnalyserService.class);
 	
@@ -42,11 +44,13 @@ public final class WorkingArea {
 	public void drawUI() {
 		// Add style to the panel
 		menubar.setStyleName("menubar");
-		dataPanel.setStyleName("dataPanel");
 		mainBoard.setStyleName("dashboard");
 		siteList.setStyleName("listBox");
-
+		dataPanel.setStyleName("dataPanel");
 		siteList.addChangeHandler(new ChangeSiteNameHandler());
+		
+		avgPanel.setStyleName("dataPanel");
+		fuelPanel.setStyleName("dataPanel");
 		
 		// fill data to List box  
 		addSiteNames();
@@ -55,6 +59,8 @@ public final class WorkingArea {
 
 		mainBoard.add(menubar);
 		mainBoard.add(dataPanel);
+		mainBoard.add(fuelPanel);
+		mainBoard.add(avgPanel);
 		root.add(mainBoard);
 	}
 
@@ -237,7 +243,7 @@ public final class WorkingArea {
 
 	private void loadAverageTransactionAmount(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
-		lineChart.setSeriesType(SeriesType.LINE);
+		lineChart.setSeriesType(SeriesType.AREA);
 		lineChart.setTitle("Average Transaction Amount");
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
@@ -249,7 +255,7 @@ public final class WorkingArea {
 		lineChart.setData(custWaitTimeMap);
 		lineChart.sethAxis("Date");
 		lineChart.setvAxis("Average Amount");
-		dataPanel.add(lineChart.getPanel());
+		avgPanel.add(lineChart.getPanel());
 	}
 
 	private void loadDailySalesCount(String entry, List<? extends TransactionData> list) {
@@ -276,7 +282,7 @@ public final class WorkingArea {
 
 	private void loadCustomerWaitTimeByCashier(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
-		lineChart.setSeriesType(SeriesType.LINE);
+		lineChart.setSeriesType(SeriesType.AREA);
 		lineChart.setTitle("Customer Waiting Time By Cashier");
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
@@ -288,7 +294,7 @@ public final class WorkingArea {
 		lineChart.setData(custWaitTimeMap);
 		lineChart.sethAxis("Cashier Name");
 		lineChart.setvAxis("Customer Wait Time");
-		dataPanel.add(lineChart.getPanel());
+		avgPanel.add(lineChart.getPanel());
 	}
 
 	private void loadSalesByFuelProduct(String entry, List<? extends TransactionData> list) {
@@ -304,7 +310,20 @@ public final class WorkingArea {
 		barChart.setData(fuelSalesMap);
 		barChart.sethAxis("Amount");
 		barChart.setvAxis("Fuel Product");
-		dataPanel.add(barChart.getPanel());
+		fuelPanel.add(barChart.getPanel());
+		
+		VFIPieChart pieChart = new VFIPieChart();
+		pieChart.setTitle(entry);
+		pieChart.setTitle("Volume Sold By Fuel Products");
+		pieChart.setDataColumnType1(ColumnType.STRING, "");
+		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
+		fuelSalesMap = new HashMap<String, Double>();
+		for (TransactionData fuelSalesData : list) {
+			FuelProductSale fuelSale = (FuelProductSale) fuelSalesData;
+			fuelSalesMap.put(fuelSale.getDescription(), fuelSale.getVolume());
+		}
+		pieChart.setData(fuelSalesMap);
+		fuelPanel.add(pieChart.getPanel());
 	}
 
 	private void loadSalesByDepartmentBottom(String entry, List<? extends TransactionData> list) {
