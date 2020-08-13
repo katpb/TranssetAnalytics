@@ -158,7 +158,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 				String date = String.valueOf(doc.get("Date"));
 				String num = String.valueOf(doc.get("CategoryNum"));
 				String desc = String.valueOf(doc.get("CategoryDesc"));
-				Integer count = getIntegerValue(String.valueOf(doc.get("Count")));
+				Double count = getDoubleValue(String.valueOf(doc.get("Count")));
 				catSaleCount.add(new CategorySaleCount(date, num, desc, count));
 			}
 			// store the data in the collection map based on the flag 'isTopList'
@@ -227,7 +227,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			while(iterator.hasNext()) {
 				Document doc = iterator.next();
 				String date = String.valueOf(doc.get("Date"));
-				Integer count = getIntegerValue(String.valueOf(doc.get("Count")));
+				Integer count = getIntegerValue(String.valueOf(doc.get("TxnCount")));
 				dailySaleCounts.add(new DailySalesInfo(date, count));
 			}
 			// store the data in the collection map based on the flag 'isTopList'
@@ -390,24 +390,6 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public Map<String, List<? extends TransactionData>> getCollection(String siteId) throws IllegalArgumentException {
 		return siteMap.get(siteId);
-	}
-
-	public static void main(String[] args) {
-		//2020-04-15 18:30:00.000Z
-//				String date = "2020-04-15 18:30:00.000Z";
-//				Date date1 = null;
-//
-//				// parse String datetime to Date
-//				try {
-//				date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-//				System.out.println("time entered: "+  date);
-//				} catch (ParseException e) { e.printStackTrace(); }
-//
-//				// format the Date object then assigns to String
-//				Format formatter;
-//				formatter = new SimpleDateFormat("MM-dd");
-//				String s = formatter.format(date1);
-//				System.out.println(s);
 	}
 
 	@Override

@@ -11,6 +11,8 @@ public class CustomerCount extends TransactionData {
 
 	public CustomerCount(String date, String custCardCount, int count) {
 		super(date);
+		this.customerCardNumber = custCardCount;
+		this.count = count;
 	}
 
 	/**

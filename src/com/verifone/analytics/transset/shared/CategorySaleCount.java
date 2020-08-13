@@ -3,13 +3,13 @@ package com.verifone.analytics.transset.shared;
 public class CategorySaleCount extends TransactionData {
 	
 	private MerchandiseInfo cat = null;
-	private int count = 0;
+	private double count = 0;
 	
 	public CategorySaleCount() {
 		super();
 	}
 
-	public CategorySaleCount(String date, String catNum, String catDesc, int count) {
+	public CategorySaleCount(String date, String catNum, String catDesc, double count) {
 		super(date);
 		this.cat = new MerchandiseInfo(catNum, catDesc);
 		this.count = count;
@@ -32,7 +32,7 @@ public class CategorySaleCount extends TransactionData {
 	/**
 	 * @return the count
 	 */
-	public int getCount() {
+	public double getCount() {
 		return count;
 	}
 
