@@ -406,7 +406,7 @@ public final class WorkingArea {
 		lineChart.setTitle(entry);
 		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
 			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());
@@ -436,7 +436,7 @@ public final class WorkingArea {
 		lineChart.setTitle(entry);
 		lineChart.setDataColumnType1(ColumnType.STRING, "Plu description");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "Number Plu Sales");
-		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		Map <String, Double> pluCountMap = new HashMap<String, Double>();
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
 			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());

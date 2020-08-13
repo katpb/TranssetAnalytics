@@ -3,13 +3,13 @@ package com.verifone.analytics.transset.shared;
 public class PluSaleCount extends TransactionData {
 	
 	private MerchandiseInfo plu = null;
-	private int count = 0;
+	private double count = 0;
 	
 	public PluSaleCount() {
 		super();
 	}
 
-	public PluSaleCount(String date, String upcNum, String pluDesc, int count) {
+	public PluSaleCount(String date, String upcNum, String pluDesc, double count) {
 		super(date);
 		this.plu = new MerchandiseInfo(upcNum, pluDesc);
 		this.count = count;
@@ -33,7 +33,7 @@ public class PluSaleCount extends TransactionData {
 	/**
 	 * @return the count
 	 */
-	public int getCount() {
+	public double getCount() {
 		return count;
 	}
 
