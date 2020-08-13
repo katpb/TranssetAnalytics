@@ -130,6 +130,7 @@ public final class WorkingArea {
 		clearPanels();
 		// Get the result and draw chart
 		for (String entry :result.keySet()) {
+			GWT.log("Entries : " + entry);
 			switch (entry) {
 			case "salesByUPCTop":
 				loadSalesByUPCTop(entry, result.get(entry));
@@ -226,10 +227,8 @@ public final class WorkingArea {
 			customerCountMap.put(cardNumber, customerCount.getCount());
 		}
 		barChart.setData(customerCountMap);
-		salesCustCountPanel.add(pieChart.getPanel());
+		salesCustCountPanel.add(barChart.getPanel());
 		barChart.sethAxis("CustomerCard");
-		barChart.setvAxis("Count");
-		dataPanel.add(barChart.getPanel());
 	}
 
 	private void loadDiscountsByLoyaltyProgram(String entry, List<? extends TransactionData> list) {
@@ -372,9 +371,14 @@ public final class WorkingArea {
 		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		pieChart.setSeriesType(SeriesType.BARS);
 		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
+		int count = 0;
 		for (TransactionData dailySaleInfo : list) {
 			DepartmentSaleCount deptSalesCount = (DepartmentSaleCount)dailySaleInfo;
 			deptCountMap.put(deptSalesCount.getDeptDesc(), deptSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
 		pieChart.setData(deptCountMap);
 		pieChart.sethAxis("Department");
@@ -389,9 +393,14 @@ public final class WorkingArea {
 		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		pieChart.setSeriesType(SeriesType.BARS);
 		Map <String, Integer> deptCountMap = new HashMap<String, Integer>();
+		int count = 0;
 		for (TransactionData dailySaleInfo : list) {
 			DepartmentSaleCount deptSalesCount = (DepartmentSaleCount)dailySaleInfo;
-			deptCountMap.put(deptSalesCount.getDeptDesc().substring(0, 8), deptSalesCount.getCount());
+			deptCountMap.put(deptSalesCount.getDeptDesc(), deptSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
 		pieChart.setData(deptCountMap);
 		pieChart.sethAxis("Department");
@@ -405,13 +414,18 @@ public final class WorkingArea {
 		barChart.setDataColumnType1(ColumnType.STRING, "");
 		barChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Double> pluCountMap = new HashMap<String, Double>();
+		int count = 0;
 		for (TransactionData dailySaleInfo : list) {
 			CategorySaleCount catSalesCount = (CategorySaleCount)dailySaleInfo;
 			pluCountMap.put(catSalesCount.getCategoryDesc(), catSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
 		barChart.setData(pluCountMap);
-		barChart.sethAxis("Category");
-		barChart.sethAxis("Count");
+		barChart.sethAxis("");
+		barChart.setvAxis("");
 		categotyPanel.add(barChart.getPanel());		
 	}
 
@@ -421,13 +435,18 @@ public final class WorkingArea {
 		pieChart.setDataColumnType1(ColumnType.STRING, "");
 		pieChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Double> pluCountMap = new HashMap<String, Double>();
+		int count = 0;
 		for (TransactionData dailySaleInfo : list) {
 			CategorySaleCount catSalesCount = (CategorySaleCount) dailySaleInfo;
 			pluCountMap.put(catSalesCount.getCategoryDesc(), catSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
 		pieChart.setData(pluCountMap);
-		pieChart.sethAxis("Category");
-		pieChart.sethAxis("Count");
+		pieChart.sethAxis("");
+		pieChart.sethAxis("");
 		categotyPanel.add(pieChart.getPanel());
 	}
 
@@ -437,18 +456,20 @@ public final class WorkingArea {
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		int count = 0;
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
 			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
-		GWT.log(pluCountMap.size() + "");
 		lineChart.setSeriesType(SeriesType.LINE);
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");
 		lineChart.sethAxis("Count");
-		upcPanel.add(lineChart.getPanel());
-
-		
+		upcPanel.add(lineChart.getPanel());		
 	}
 
 	private void loadSalesByUPCTop(String entry, List<? extends TransactionData> list) {
@@ -457,11 +478,15 @@ public final class WorkingArea {
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Integer> pluCountMap = new HashMap<String, Integer>();
+		int count =0;
 		for (TransactionData dailySaleInfo : list) {
 			PluSaleCount pluSalesCount = (PluSaleCount)dailySaleInfo;
 			pluCountMap.put(pluSalesCount.getUPCDesc(), pluSalesCount.getCount());
+			count++;
+			if (count == 5) {
+				break;
+			}
 		}
-		GWT.log(pluCountMap.size() + "");
 		lineChart.setSeriesType(SeriesType.LINE);
 		lineChart.setData(pluCountMap);
 		lineChart.sethAxis("Plu");

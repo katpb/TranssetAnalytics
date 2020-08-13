@@ -8,7 +8,11 @@ import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.ComboChart;
 import com.googlecode.gwt.charts.client.corechart.ComboChartOptions;
+import com.googlecode.gwt.charts.client.options.Bar;
 import com.googlecode.gwt.charts.client.options.HAxis;
+import com.googlecode.gwt.charts.client.options.Legend;
+import com.googlecode.gwt.charts.client.options.LegendAlignment;
+import com.googlecode.gwt.charts.client.options.LegendPosition;
 import com.googlecode.gwt.charts.client.options.SeriesType;
 import com.googlecode.gwt.charts.client.options.VAxis;
 
@@ -42,6 +46,9 @@ public class VFIBarChart {
 		options.setHAxis(HAxis.create(hAxis));
 		options.setVAxis(VAxis.create(vAxis));
 		options.setSeriesType(seriesType);
+		Legend legend = Legend.create();
+		legend.setPosition(LegendPosition.NONE);
+		options.setLegend(legend);
 		chart.draw(data, options);
 	}	
 	
