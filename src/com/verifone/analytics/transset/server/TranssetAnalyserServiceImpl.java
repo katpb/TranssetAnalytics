@@ -66,11 +66,11 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 
 	private static void loadCollectionData(MongoCursor<Document> iterator, String collection) {
 		switch (collection) {
-		case "salesByUPCTop":
+		case "salesByUpcTop":
 			loadSalesByUPC(iterator, true);
 			break;
 
-		case "salesByUPCBottom":
+		case "salesByUpcBottom":
 			loadSalesByUPC(iterator, false);
 			break;
 
@@ -145,7 +145,7 @@ public class TranssetAnalyserServiceImpl extends RemoteServiceServlet implements
 			
 			// store the data in the collection map based on the flag 'isTopList'
 			if(!pluSaleCount.isEmpty()) {
-				collectionsMap.put(isTopList ? "salesByUPCTop" : "salesByUPCBottom",  pluSaleCount);
+				collectionsMap.put(isTopList ? "salesByUpcTop" : "salesByUpcBottom",  pluSaleCount);
 			}
 		}
 	}
