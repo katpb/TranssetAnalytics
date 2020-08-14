@@ -83,3 +83,19 @@
 	background: white;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
+.inventoryTracktitle {
+	font-size: 18px;
+	text-decoration-line: underline;
+}
+.paymentTracktitle {
+	font-size: 18px;
+	text-decoration-line: underline;
+}
+.fuelProdTracktitle {
+	font-size: 18px;
+	text-decoration-line: underline;
+}
+.custCahierTracktitle {
+	font-size: 18px;
+	text-decoration-line: underline;
+}

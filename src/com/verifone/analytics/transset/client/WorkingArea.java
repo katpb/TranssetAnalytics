@@ -41,6 +41,11 @@ public final class WorkingArea {
 	
 	private HTMLPanel salesCustCountPanel = new HTMLPanel("");
 	
+	private HTMLPanel inventoryTracktitle = new HTMLPanel("Inventory Tracking");
+	private HTMLPanel paymentTracktitle = new HTMLPanel("Payment & Loyalty Tracking");
+	private HTMLPanel fuelProdTracktitle = new HTMLPanel("Fuel Product Tracking");
+	private HTMLPanel custCahierTracktitle = new HTMLPanel("Customer & Cashier Tracking");
+	
 	private ListBox siteList = new ListBox();
 	private static final TranssetAnalyserServiceAsync dbService = GWT.create(TranssetAnalyserService.class);
 	
@@ -72,6 +77,11 @@ public final class WorkingArea {
 		
 		salesCustCountPanel.setStyleName("salesCustCountPanel");
 		
+		inventoryTracktitle.setStyleName("inventoryTracktitle");
+		paymentTracktitle.setStyleName("paymentTracktitle");
+		fuelProdTracktitle.setStyleName("fuelProdTracktitle");
+		custCahierTracktitle.setStyleName("custCahierTracktitle");
+		
 		// fill data to List box  
 		addSiteNames();
 
@@ -86,11 +96,15 @@ public final class WorkingArea {
 		menubar.add(title);
 		
 		// Data table added element 
+		dataPanel.add(inventoryTracktitle);
 		dataPanel.add(upcPanel);
 		//dataPanel.add(categotyPanel);
 		dataPanel.add(departmentPanel);
+		dataPanel.add(paymentTracktitle);
 		dataPanel.add(paymentPanel);
+		dataPanel.add(fuelProdTracktitle);
 		dataPanel.add(fuelPanel);
+		dataPanel.add(custCahierTracktitle);
 		dataPanel.add(avgPanel);
 		dataPanel.add(salesCustCountPanel);
 		
@@ -127,7 +141,6 @@ public final class WorkingArea {
 		clearPanels();
 		// Get the result and draw chart
 		for (String entry :result.keySet()) {
-			GWT.log("Entries : " + entry);
 			switch (entry) {
 			case "salesByUpcTop":
 				loadSalesByUPCTop(entry, result.get(entry));
@@ -225,7 +238,6 @@ public final class WorkingArea {
 		}
 		barChart.setData(customerCountMap);
 		salesCustCountPanel.add(barChart.getPanel());
-		barChart.sethAxis("CustomerCard");
 	}
 
 	private void loadDiscountsByLoyaltyProgram(String entry, List<? extends TransactionData> list) {
@@ -278,7 +290,7 @@ public final class WorkingArea {
 	private void loadAverageTransactionAmount(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setSeriesType(SeriesType.AREA);
-		lineChart.setTitle("Average Basket Size");
+		lineChart.setTitle("Average Basket Size ($)");
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Double> custWaitTimeMap = new HashMap<String, Double>();
@@ -321,6 +333,7 @@ public final class WorkingArea {
 		for (TransactionData txnData : list) {
 			CashierTrackingData custWaitTime = (CashierTrackingData) txnData;
 			custWaitTimeMap.put(custWaitTime.getCashierName(), custWaitTime.getAvgCustomerWaitTime());
+			GWT.log("" + custWaitTime.getCashierName() +  "-" + custWaitTime.getAvgCustomerWaitTime());
 		}
 		lineChart.setData(custWaitTimeMap);
 		salesCustCountPanel.add(lineChart.getPanel());
