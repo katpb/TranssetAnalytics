@@ -314,7 +314,7 @@ public final class WorkingArea {
 	private void loadCustomerWaitTimeByCashier(String entry, List<? extends TransactionData> list) {
 		VFIBarChart lineChart = new VFIBarChart();
 		lineChart.setSeriesType(SeriesType.AREA);
-		lineChart.setTitle("Wait Time By Cashier");
+		lineChart.setTitle("Cashier Efficiency Tracking");
 		lineChart.setDataColumnType1(ColumnType.STRING, "");
 		lineChart.setDataColumnType2(ColumnType.NUMBER, "");
 		Map <String, Double> custWaitTimeMap = new HashMap<String, Double>();
